@@ -1,16 +1,16 @@
 # InfiWatch
 
-InfiWatch is a free-to-use platform-as-a-service (PaaS) that makes it easy to ingest, search, visualize, and analyze your Hyperledger Fabric's data. This is the InfiLock Enterprise analysis platform in the form of PaaS that you can start using in a matter of seconds, with no prior technical expertise required!
+InfiWatch is a free-to-use platform-as-a-service (PaaS) that makes it easy to ingest, search, visualize, and analyze your Hyperledger Fabric's data. This is the Infilock Enterprise analysis platform in the form of PaaS that you can start using in a matter of seconds, with no prior technical expertise required!
 
 We built InfiWatch on top of OpenSearch. OpenSearch is a distributed, open-source search and analytics suite used for a broad set of use cases like real-time application monitoring, log analytics, and website search. OpenSearch provides a highly scalable system for providing fast access and response to large volumes of data with an integrated visualization tool, OpenSearch Dashboards, that makes it easy for users to explore their data. 
 
 [![infiwatch](https://user-images.githubusercontent.com/108833121/177629891-52565ce6-b85c-4388-a581-32ad43c59ef5.png)](https://www.youtube.com/watch?v=zkk19RiKsJk)
 
-# Setup Instrustion for pure Hyperledger Fabric
+# Setup Instruction for pure Hyperledger Fabric
 
 ## Get Credentials
 
-To use InfiWatch, users must register and get their own set of credentials. To do that, users need to contact `infiwatch@infilock.io` and ask for registration. InfiLock's support team will gladly hand you the required credentials within hours. 
+To use InfiWatch, users must register and get their own set of credentials. To do that, users need to contact `info@infilock.io` and ask for registration. Infilock's support team will gladly hand you the required credentials within hours. 
 
 The credentials' package contains:
 - client.crt: Your client's public certificate.
@@ -18,6 +18,7 @@ The credentials' package contains:
 - ca.crt: Our certificate authority's certificate.
 - Instance id: Your special Instance ID to access the data of yours.
 - metricbeat.yml: Example integration configuration file.
+- username and password
 
 *Be careful: Do not share these credentials with anybody.*
 
@@ -110,10 +111,13 @@ NETWORK ID     NAME                   DRIVER    SCOPE
 f327e7ad9796   none                   null      local
 ```
 
+## Watch data in InfiWatch
+Login to [InfiWatch](http://watch.infilock.io/app/login? "InfiWatch's Panel") by the username and password and watch your data in pre-defined dashboards.
+
 # Setup on Hyperledger Fabric deployed on Kubernetes
 ## Get Credentials
 
-To use InfiWatch, users must register and get their own set of credentials. To do that, users need to contact `info@infilock.io` and ask for registration. InfiLock's support team will gladly hand you the required credentials within hours. 
+To use InfiWatch, users must register and get their own set of credentials. To do that, users need to contact `info@infilock.io` and ask for registration. Infilock's support team will gladly hand you the required credentials within hours. 
 
 The credentials' package contains:
 - client.crt: Your client's public certificate.
@@ -121,6 +125,7 @@ The credentials' package contains:
 - ca.crt: Our certificate authority's certificate.
 - Instance id: Your special Instance ID to access the data of yours.
 - metricbeat.yml: Example integration configuration file.
+- username and password.
 
 *Be careful: Do not share these credentials with anybody.*
 
@@ -206,3 +211,6 @@ helm install --namespace <monitoring> -f <path/to/metricbeat.yaml> path metricbe
 ```shell
 helm upgrade -n monitoring -f <path/to/metricbeat.yaml> metricbeat elastic/metricbeat
 ```
+
+## Watch data in InfiWatch
+Login to [InfiWatch](http://watch.infilock.io/app/login? "InfiWatch's Panel") by the username and password and watch your data in pre-defined dashboards.
