@@ -6,7 +6,7 @@ We built InfiWatch on top of OpenSearch. OpenSearch is a distributed, open-sourc
 
 [![infiwatch](https://user-images.githubusercontent.com/108833121/177629891-52565ce6-b85c-4388-a581-32ad43c59ef5.png)](https://www.youtube.com/watch?v=zkk19RiKsJk)
 
-# Setup Instruction for pure Hyperledger Fabric
+# Setup Instruction for Docker-based Hyperledger Fabric
 
 ## Get Credentials
 
@@ -20,9 +20,9 @@ The credentials' package contains:
 - metricbeat.yml: Example integration configuration file.
 - username and password
 
-*Be careful: Do not share these credentials with anybody.*
+**Be careful: Do not share these credentials with anybody.**
 
-## Integrate to InfiWatch
+## Integration instruction for Docker-based Hyperledger Fabric
 
 Download and extract the credentials:
 
@@ -73,11 +73,28 @@ To use this example, you need to customize it according to your setup. First thi
 
 To find required IPs you can use the following helper command:
 
-```
+``` sh
 docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' container_name_or_id
 ```
 
 Change the `container_name_or_id` and put the target node's name or id. Repeat this process to find all nodes' IPs.
+
+To understand it better, please look at the following example:
+
+``` sh
+$ docker ps --format '{{.Names}} {{.ID}} {{.Image}}'
+
+peer0.infilock.local 75a447ebcf70 hyperledger/fabric-peer:2.3.2 
+orderer.infilock.local   b3f644e6d213 hyperledger/fabric-orderer:2.3.2
+
+$ docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' peer0.infilock.local
+
+172.17.0.2
+
+$ docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' orderer.infilock.local
+
+172.17.0.101
+```
 
 Edit the `instanceid` and put the unique identifier handed to you via email. 
 
@@ -111,39 +128,23 @@ NETWORK ID     NAME                   DRIVER    SCOPE
 f327e7ad9796   none                   null      local
 ```
 
-## Watch data in InfiWatch
-Login to [InfiWatch](http://watch.infilock.io/app/login? "InfiWatch's Panel") by the username and password and watch your data in pre-defined dashboards.
-
-# Setup on Hyperledger Fabric deployed on Kubernetes
-## Get Credentials
-
-To use InfiWatch, users must register and get their own set of credentials. To do that, users need to contact `info@infilock.io` and ask for registration. Infilock's support team will gladly hand you the required credentials within hours. 
-
-The credentials' package contains:
-- client.crt: Your client's public certificate.
-- client.key: Your client's private certificate.
-- ca.crt: Our certificate authority's certificate.
-- Instance id: Your special Instance ID to access the data of yours.
-- metricbeat.yml: Example integration configuration file.
-- username and password.
-
-*Be careful: Do not share these credentials with anybody.*
+## Integration instruction for Kubernetes-based Hyperledger Fabric
 
 Download and extract the credentials.
 
-Given metricbeat example (`metricbeat.yml`) looks like this:
+Given metricbeat example (`metricbeat.kubernetes.yml`) looks like this:
 
 ``` yml
 daemonset:
   enabled: false
 deployment:
   metricbeatConfig:
-    metricbeat.yml: |
+    metricbeat.kubernetes.yml: |
       metricbeat.modules:
         - module: prometheus
           period: 10s
           enabled: true
-          hosts:
+          hosts: # Change me
             - cbiot-orderer0.cbiot.svc.cluster.local:8443
             - cbiot-orderer1.cbiot.svc.cluster.local:8443
             - cbiot-orderer2.cbiot.svc.cluster.local:8443
@@ -165,7 +166,7 @@ deployment:
       - add_fields:
           target: meta
           fields:
-            instanceid: 3a7d7c17-de62-49aa-ac79-ee12026f60d3
+            instanceid: 3a7d7c18-fg62-49aa-ac89-ff11426f60d3 # Change me
   secretMounts:
     - name: metricbeat-certificate-pem
       secretName: metricbeat-certificate
@@ -173,44 +174,51 @@ deployment:
     - name: metricbeat-ca-pem
       secretName: metricbeat-ca
       path: /usr/share/metricbeat/ca/certs
-imageTag: 7.10.2
+imageTag: 8.2.3
 image: docker.elastic.co/beats/metricbeat-oss
 ```
 
-## Integrate to InfiWatch
-### Pre-requisits:
-1- Hyperledger Fabric is installed on Kubernetes
-2- Kubectl and Helm are installed
+### Prerequisites:
 
-### Step1: Setup
-### Create a namespace (e.g., monitoring)
-```shell
+* Hyperledger Fabric is installed on Kubernetes
+* `kubectl` and `helm` are installed
+
+### Create a Namespace (e.g., monitoring)
+
+To create a namespace you can use the following command:
+
+``` sh
 kubectl create namespace <monitoring>
 ```
 
-### Step2: Install
+Replace `monitoring` with your desired name.
 
-1 - import client cert secrets
-```shell
+### Deploy a metricbeat instance
+
+Import client certtificates:
+
+``` sh
 kubectl create secret tls metricbeat-certificate -n <monitoring> --key="client.key" --cert="client.crt"
 ```
 
-2 - import ca.crt secret : create a TLS secret in the namespace(e.g., monitoring) manually either by Rancher or Kubectl. Replace ca.crt and leave Private Key blank.
+to Import the `ca.crt` certificate, create a TLS secret in the namespace(e.g., monitoring) manually either by Rancher or Kubectl. Paste the `ca.crt`'s content and leave the private key blank.
 
-3 - install metricbeat
-Put the metricbeat.yaml file in a folder in local system and run the following commands.
-```shell
+To deploy an instance of metricbeat run the following commands.
+
+```sh
 helm repo add stable https://charts.helm.sh/stable
 helm repo add elastic https://helm.elastic.co
 
-helm install --namespace <monitoring> -f <path/to/metricbeat.yaml> path metricbeat elastic/metricbeat
+helm install --namespace <monitoring> -f <path/to/metricbeat.kubernetes.yml> path metricbeat elastic/metricbeat
 ```
 
-## Step3: Upgrade
+Make sure `metricbeat.kubernetes.yml` exists on the host system.
 
-```shell
-helm upgrade -n monitoring -f <path/to/metricbeat.yaml> metricbeat elastic/metricbeat
+### How to Upgrade Deployed metricbeat
+
+```sh
+helm upgrade -n monitoring -f <path/to/metricbeat.kubernetes.yml> metricbeat elastic/metricbeat
 ```
 
-## Watch data in InfiWatch
-Login to [InfiWatch](http://watch.infilock.io/app/login? "InfiWatch's Panel") by the username and password and watch your data in pre-defined dashboards.
+## Explore InfiWatch
+Login to [InfiWatch](http://watch.infilock.io/app/login? "InfiWatch's Panel") using your username and password combination and explore your data in pre-built dashboards.
