@@ -19,7 +19,7 @@ Reference page for InfiWatch's dashboards & metrics.
 
 ## Fabric Transaction Monitoring Dashboard
 
-![infiwatch](./images/Fabric%20Infrastructure%20Monitoring%20Dashboard%20-%20InfiWatch.png)
+![infiwatch](./images/Fabric%20Transaction%20Monitoring%20Dashboard%20-%20InfiWatch.png)
 
 - **Control Panel (Channels & Chaincodes):** Select your target channel or chain code so you can only see information for that channel/node.
 - **Transaction Rate:** Compare transaction rate to the last time fragmentation 
