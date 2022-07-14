@@ -4,6 +4,8 @@ Reference page for InfiWatch's dashboards & metrics.
 
 ## Fabric Infrastructure Monitoring Dashboard
 
+![infiwatch](./images/Fabric%20Infrastructure%20Monitoring%20Dashboard%20-%20InfiWatch.png)
+
 - **Control Panel (Nodes):** Select your target node so you can only see information for that node.
 - **Blockchain Version:** Installed Hyperldger Fabric's version
 - **Active Peers:** Total active peers count
@@ -16,6 +18,8 @@ Reference page for InfiWatch's dashboards & metrics.
 - **gRPC Active Connections:** Total gRPC active connections timeline. gRPC is an RPC framework used by Hyperledger Fabric for internal communication between nodes.
 
 ## Fabric Transaction Monitoring Dashboard
+
+![infiwatch](./images/Fabric%20Infrastructure%20Monitoring%20Dashboard%20-%20InfiWatch.png)
 
 - **Control Panel (Channels & Chaincodes):** Select your target channel or chain code so you can only see information for that channel/node.
 - **Transaction Rate:** Compare transaction rate to the last time fragmentation 

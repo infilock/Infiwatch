@@ -4,7 +4,7 @@ InfiWatch is a free-to-use platform-as-a-service (PaaS) that makes it easy to in
 
 We built InfiWatch on top of OpenSearch. OpenSearch is a distributed, open-source search and analytics suite used for a broad set of use cases like real-time application monitoring, log analytics, and website search. OpenSearch provides a highly scalable system for providing fast access and response to large volumes of data with an integrated visualization tool, OpenSearch Dashboards, that makes it easy for users to explore their data. 
 
-[![infiwatch](https://user-images.githubusercontent.com/108833121/177629891-52565ce6-b85c-4388-a581-32ad43c59ef5.png)](https://www.youtube.com/watch?v=zkk19RiKsJk)
+[![infiwatch](./images/InfiWatch.png)](https://www.youtube.com/watch?v=zkk19RiKsJk)
 
 # Setup Instruction for Docker-based Hyperledger Fabric
 
