@@ -1,6 +1,7 @@
 # InfiWatch
 
 InfiWatch is a free-to-use platform-as-a-service (PaaS) that makes it easy to ingest, search, visualize, and analyze your Hyperledger Fabric's data. This is the Infilock Enterprise analysis platform in the form of PaaS that you can start using in a matter of seconds, with no prior technical expertise required!
+[InfiWatch monitors +20 security metrics through predefined dashboards](https://github.com/infilock/infiwatch/blob/main/Dashboards%20%26%20Metrics.md).
 
 We built InfiWatch on top of OpenSearch. OpenSearch is a distributed, open-source search and analytics suite used for a broad set of use cases like real-time application monitoring, log analytics, and website search. OpenSearch provides a highly scalable system for providing fast access and response to large volumes of data with an integrated visualization tool, OpenSearch Dashboards, that makes it easy for users to explore their data. 
 
