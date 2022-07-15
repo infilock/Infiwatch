@@ -131,6 +131,11 @@ f327e7ad9796   none                   null      local
 
 ## Integration instruction for Kubernetes-based Hyperledger Fabric
 
+### Prerequisites:
+
+* Hyperledger Fabric is installed on Kubernetes
+* `kubectl` and `helm` are installed
+
 Download and extract the credentials.
 
 Given metricbeat example (`metricbeat.kubernetes.yml`) looks like this:
@@ -146,11 +151,11 @@ deployment:
           period: 10s
           enabled: true
           hosts: # Change me
-            - cbiot-orderer0.cbiot.svc.cluster.local:8443
-            - cbiot-orderer1.cbiot.svc.cluster.local:8443
-            - cbiot-orderer2.cbiot.svc.cluster.local:8443
-            - cbiot-peer0.cbiot.svc.cluster.local:9443
-            - cbiot-peer1.cbiot.svc.cluster.local:9443
+            - XXX-orderer0.YYY.svc.cluster.local:8443
+            - XXX-orderer1.YYY.svc.cluster.local:8443
+            - XXX-orderer2.YYY.svc.cluster.local:8443
+            - XXX-peer0.YYY.svc.cluster.local:9443
+            - XXX-peer1.YYY.svc.cluster.local:9443
           metrics_path: /metrics
           metricsets: ["collector"]
           metrics_filters:
@@ -160,14 +165,14 @@ deployment:
       output.logstash:
         enabled: true
         hosts: ["telemetry.infilock.io:5044"]
-        ssl.certificate_authorities: ["/usr/share/metricbeat/ca/certs/tls.crt"]
-        ssl.certificate: "/usr/share/metricbeat/config/certs/tls.crt"
-        ssl.key: "/usr/share/metricbeat/config/certs/tls.key"
+        ssl.certificate_authorities: ["/usr/share/metricbeat/ca/certs/ca.crt"]
+        ssl.certificate: "/usr/share/metricbeat/config/certs/client.crt"
+        ssl.key: "/usr/share/metricbeat/config/certs/client.key"
       processors:
       - add_fields:
           target: meta
           fields:
-            instanceid: 3a7d7c18-fg62-49aa-ac89-ff11426f60d3 # Change me
+            instanceid: 3b8d7c10-fg89-49bb-ac89-ff22517d90d3 # Change me
   secretMounts:
     - name: metricbeat-certificate-pem
       secretName: metricbeat-certificate
@@ -179,10 +184,15 @@ imageTag: 8.2.3
 image: docker.elastic.co/beats/metricbeat-oss
 ```
 
-### Prerequisites:
+To use this example, you need to customize it according to your setup. First things first, the `hosts` section needs to be edited. To do that, you need to add your Hyperledger nodes' IPs.
 
-* Hyperledger Fabric is installed on Kubernetes
-* `kubectl` and `helm` are installed
+Find Peers and Orderers pods in K8s and make a list of hosts as the following:
+```sh
+<pod name>.<domain name>.svc.cluster.local:<port>
+```
+Where `port` is 8443 and 9443 for Orderers and Peers by default.
+
+Edit the `instanceid` and put the unique identifier handed to you via email. 
 
 ### Create a Namespace (e.g., monitoring)
 
@@ -204,13 +214,15 @@ kubectl create secret tls metricbeat-certificate -n <monitoring> --key="client.k
 
 to Import the `ca.crt` certificate, create a TLS secret in the namespace(e.g., monitoring) manually either by Rancher or Kubectl. Paste the `ca.crt`'s content and leave the private key blank.
 
+![image](https://user-images.githubusercontent.com/108833121/179256285-c6be59f9-14d9-488e-b1de-d40c449278d0.png)
+
 To deploy an instance of metricbeat run the following commands.
 
 ```sh
 helm repo add stable https://charts.helm.sh/stable
 helm repo add elastic https://helm.elastic.co
 
-helm install --namespace <monitoring> -f <path/to/metricbeat.kubernetes.yml> path metricbeat elastic/metricbeat
+helm install --namespace <monitoring> -f <path/to/metricbeat.kubernetes.yml> metricbeat elastic/metricbeat
 ```
 
 Make sure `metricbeat.kubernetes.yml` exists on the host system.
