@@ -165,9 +165,9 @@ deployment:
       output.logstash:
         enabled: true
         hosts: ["telemetry.infilock.io:5044"]
-        ssl.certificate_authorities: ["/usr/share/metricbeat/ca/certs/ca.crt"]
-        ssl.certificate: "/usr/share/metricbeat/config/certs/client.crt"
-        ssl.key: "/usr/share/metricbeat/config/certs/client.key"
+        ssl.certificate_authorities: ["/usr/share/metricbeat/ca/certs/tls.crt"]
+        ssl.certificate: "/usr/share/metricbeat/config/certs/tls.crt"
+        ssl.key: "/usr/share/metricbeat/config/certs/tls.key"
       processors:
       - add_fields:
           target: meta
