@@ -234,4 +234,4 @@ helm upgrade -n monitoring -f <path/to/metricbeat.kubernetes.yml> metricbeat ela
 ```
 
 ## Explore InfiWatch
-Login to [InfiWatch](http://watch.infilock.io:5061/app/login? "InfiWatch's Panel") using your username and password combination and explore your data in pre-built dashboards.
+Login to [InfiWatch](http://watch.infilock.io:5601/app/login? "InfiWatch's Panel") using your username and password combination and explore your data in pre-built dashboards.
